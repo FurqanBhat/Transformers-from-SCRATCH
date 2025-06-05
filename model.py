@@ -133,7 +133,7 @@ class ResidualConnection(nn.Module):
 
 class EncoderBlock(nn.Module):
 
-    def __init(self, self_attention_block: MultiHeadAttentionBlock, feed_forward_block:FeedForwardBlock, dropout:float):
+    def __init__(self, self_attention_block: MultiHeadAttentionBlock, feed_forward_block:FeedForwardBlock, dropout:float):
         super().__init__()
         self.self_attention_block=self_attention_block
         self.feed_forward_block=feed_forward_block
@@ -142,7 +142,7 @@ class EncoderBlock(nn.Module):
 
     def forward(self, x, src_mask):
         x=self.residual_connections[0](x, lambda x:self.self_attention_block(x,x,x, src_mask))
-        x=self.residual_connections[1](x, self.feed_forward_block(x))
+        x=self.residual_connections[1](x, self.feed_forward_block)
         return x
     
 
@@ -162,7 +162,7 @@ class Encoder(nn.Module):
 
 class DecoderBlock(nn.Module):
     
-    def __init(self, self_attention_block:MultiHeadAttentionBlock, cross_attention_block:MultiHeadAttentionBlock, feed_forward_block:FeedForwardBlock, dropout:float):
+    def __init__(self, self_attention_block:MultiHeadAttentionBlock, cross_attention_block:MultiHeadAttentionBlock, feed_forward_block:FeedForwardBlock, dropout:float):
         super().__init__()
         self.self_attention_block=self_attention_block
         self.cross_attention_block=cross_attention_block
@@ -181,7 +181,7 @@ class DecoderBlock(nn.Module):
 
 class Decoder(nn.Module):
 
-    def __init(self, layers: nn.ModuleList):
+    def __init__(self, layers: nn.ModuleList):
         super().__init__()
         self.layers=layers
         self.norm=LayerNormalization()
@@ -215,6 +215,7 @@ class Transformer(nn.Module):
                   encoder: Encoder, decoder: Decoder, src_embed: InputEmbeddings,
                     tgt_embed: InputEmbeddings, src_pos: PositionalEncoding, 
                     tgt_pos: PositionalEncoding, projection_layer: ProjectionLayer):
+        super().__init__()
         self.encoder=encoder
         self.decoder=decoder
         self.src_embed=src_embed
