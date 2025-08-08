@@ -120,8 +120,21 @@ pip install -r requirements.txt
 **3. Run the Jupyter Notebook:**
 The notebook `transformers-from-scratch.ipynb` contains all the code needed to download the dataset, build the tokenizers, define the model, and run the training process. You can execute the cells sequentially in a Jupyter environment like Jupyter Lab or VS Code.
 
-**4. (Optional) Use Pre-trained Weights:**
-The trained model weights (`.pt` files) are saved in the `weights/` directory after each epoch. You can load a specific model checkpoint by setting the `preload` value in the configuration dictionary at the top of the notebook.
+**4. Use the Pre-trained Model:**
+The final trained model weights from the 20th epoch (`tmodel_19.pt`) can be used for inference. To load this model:
+* Ensure the `tmodel_19.pt` file is in the `weights/` directory.
+* In the notebook, find the `get_config()` function.
+* Set the `preload` value in the configuration dictionary to `"19"`.
+
+```python
+def get_config():
+    return {
+        # ... other config values
+        "preload": "19", # Load the final model from epoch 19
+        # ... other config values
+    }
+```
+You can then run the validation cells or write a new script to perform inference using the loaded model.
 
 ---
 
@@ -136,4 +149,4 @@ The project relies on the following Python libraries:
 * `tokenizers`
 * `tqdm`
 
-
+You can create a `requirements.txt` file with these package names.
